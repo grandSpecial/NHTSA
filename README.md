@@ -49,6 +49,31 @@ The script will:
 
 ---
 
+## Text processing / NLP (how it works)
+
+This project does **lightweight text processing**, not a full NLP pipeline. The goal is to collect complaint narratives and do simple keyword-based inspection.
+
+At a high level:
+
+1. **Collect raw complaint text**
+   - Selenium navigates NHTSA vehicle pages and expands complaint entries.
+   - The script parses the loaded HTML with BeautifulSoup and pulls the complaint narrative paragraphs.
+   - Each complaint’s text is appended into an in-memory list (`full_list`).
+
+2. **Normalize for searching (implicit)**
+   - The script currently converts each complaint entry to a Python `str(...)` before searching.
+   - No explicit normalization is applied yet (e.g., lowercasing, punctuation stripping, stemming/lemmatization).
+
+3. **Keyword matching**
+   - The analysis searches for hard-coded keywords like `"FIRE"`, `"BLOWER"`, and `"SIGNAL"` using Python substring checks (`"..." in text`).
+   - Matching complaints are printed, and the script reports counts + percentage of total complaints.
+
+If you want this to be more “NLP-like”, common next steps would be:
+- consistent casing (e.g., `.upper()`), whitespace normalization, and punctuation handling
+- regex-based matching with word boundaries
+- tokenization and frequency counts
+- exporting a structured dataset (CSV/JSON) for later analysis
+
 ## Notes / Caveats
 
 - This is an **exploratory** project and the script is not yet production-hardened.
